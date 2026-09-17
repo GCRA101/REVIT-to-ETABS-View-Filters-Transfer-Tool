@@ -15,11 +15,12 @@ namespace ViewFiltersTransfer
 {
     /* COMMAND CLASS ************************************************************ */
 
-    [Transaction(TransactionMode.Manual)] 
+    [Transaction(TransactionMode.Manual)]
     public class Command : IExternalCommand
     {
         /*ATTRIBUTES*/
-        private Autodesk.Revit.UI.UIApplication uiApp;
+        // Shared dialog title used for both success and error dialogs
+        private const String dialogTitle = "View Filters Transfer to ETABS"; 
         private Autodesk.Revit.UI.UIDocument uiDoc;
         private Autodesk.Revit.DB.Document doc;
 
@@ -31,15 +32,38 @@ namespace ViewFiltersTransfer
             try
             {
                 //1. CREATE DB AND UI DOCUMENT OBJECTS
-                //Assignment
                 this.uiDoc = commandData.Application.ActiveUIDocument;
+                // If uiDoc is null, send error message to user and stop running the addin
+                if (this.uiDoc == null) 
+                {
+                    // Inform the user and abort
+                    TaskDialog.Show(dialogTitle, "Open a Revit model before running the tool.");
+                    // Cancel the command since there is nothing to do
+                    return Result.Cancelled;
+                }
+                // Get the Revit Document
                 this.doc = uiDoc.Document;
                 //2. CALL COMMAND FUNCTION
-                transferViewFilters();
+                // Run the transfer and capture a summary report
+                String report = transferViewFilters();
+                // Show the summary to the user
+                TaskDialog.Show(dialogTitle, report); 
                 return Result.Succeeded;
             }
             catch (Exception e)
             {
+                // 3. REPORT THE ERROR TO THE USER
+                // Build a dialog to show details of the error
+                TaskDialog errorDialog = new TaskDialog(dialogTitle);
+                // High-level failure message
+                errorDialog.MainInstruction = "The View Filters could not be transferred to ETABS.";
+                // Short exception message
+                errorDialog.MainContent = e.Message;
+                // Full exception details for troubleshooting
+                errorDialog.ExpandedContent = e.ToString();
+                // Display the dialog to the user
+                errorDialog.Show();
+                // Return Result.Failed
                 return Result.Failed;
             }
         }
