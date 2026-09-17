@@ -31,6 +31,17 @@ namespace ViewFiltersTransfer
         {
             return application.CreateRibbonPanel(tabName, panelName);
         }
+
+        // Public .getOrCreate Method - returns the existing panel, creating the tab/panel only if missing
+        public RibbonPanel getOrCreate(UIControlledApplication application, String tabName, String panelName)
+        {
+            // CreateRibbonTab throws if the tab already exists (e.g. created by another add-in)
+            try { application.CreateRibbonTab(tabName); }
+            catch (Autodesk.Revit.Exceptions.ArgumentException) { }
+
+            RibbonPanel ribbonPanel = application.GetRibbonPanels(tabName).Find(rbPanel => rbPanel.Name == panelName);
+            return ribbonPanel ?? create(application, tabName, panelName);
+        }
     }
 
 
