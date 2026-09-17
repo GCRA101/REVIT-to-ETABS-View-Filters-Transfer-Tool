@@ -48,7 +48,19 @@ public class ETABSConnector : ETABSConnection {
 		ETABSApp=null;
 		//ETABSApp=helperObject.CreateObjectProgID("CSI.ETABS.API.ETABSObject");               //O(1)
         //ETABSApp = helperObject.CreateObject("c:\Program Files\Computers and Structures\ETABS 20\ETABS.exe");
-        ETABSApp = helperObject.GetObject("CSI.ETABS.API.ETABSObject");                       //O(1)
+        try
+        {
+            ETABSApp = helperObject.GetObject("CSI.ETABS.API.ETABSObject");                   //O(1)
+        }
+        catch (Exception e)
+        {
+            throw new InvalidOperationException("Could not connect to ETABS. Make sure ETABS is running with a model open " +
+                                                "(and not as administrator if Revit is not).", e);
+        }
+        if (ETABSApp == null)
+        {
+            throw new InvalidOperationException("Could not connect to ETABS. Make sure ETABS is running with a model open.");
+        }
     }
 
 
