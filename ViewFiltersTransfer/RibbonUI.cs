@@ -33,9 +33,8 @@ namespace ViewFiltersTransfer
         {
             try
             {
-                //1. Get Ribbon Panel "View Filters"
-                RibbonPanel ribbonPanel = application.GetRibbonPanels("BH Plugins").
-                                          Find(rbPanel => rbPanel.Name == "View Filters");
+                //1. Get or create RibbonTab "BH Plugins" and Ribbon Panel "View Filters" (independent of add-in load order)
+                RibbonPanel ribbonPanel = RibbonTabPanelFactory.getInstance().getOrCreate(application, "BH Plugins", "View Filters");
 
                 //2. Buildup Inputs for RibbonItemFactory
                 String imagePath = "ViewFiltersTransfer.AppLogo64x64.png";
