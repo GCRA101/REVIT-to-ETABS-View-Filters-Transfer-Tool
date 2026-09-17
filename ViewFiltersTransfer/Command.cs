@@ -71,6 +71,13 @@ namespace ViewFiltersTransfer
 
         /* METHODS */
 
+        // Format names so that Revit View Filters and ETABS Frame Sections can be matched
+        private static String formatName(String name) 
+        {
+            // Strip spaces and uppercase the name
+            return name.Replace(" ", "").ToUpper(); 
+        }
+
         //transferViewFilters()
         private void transferViewFilters()
         {
