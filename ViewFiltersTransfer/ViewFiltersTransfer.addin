@@ -4,7 +4,7 @@
 		<Name>View Filters Transfer</Name>
 		<Assembly>ViewFiltersTransfer\ViewFiltersTransfer.dll</Assembly>
 		<FullClassName>ViewFiltersTransfer.RibbonUI</FullClassName>
-		<ClientId>F9B00599-9A9F-45AD-965F-40E56E3E6EC1</ClientId>
+		<ClientId>8A849795-72BA-4DFF-BC65-0BF1A82D20E7</ClientId>
 		<VendorId>GCRA010</VendorId>
 		<VendorDescription>Buro Happold</VendorDescription>
 	</AddIn>
